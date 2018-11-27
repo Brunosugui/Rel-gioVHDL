@@ -11,6 +11,9 @@ entity minutos is
 end minutos;
 
 architecture minutes of minutos is
+
+    component prescaler1hz is
+
     begin
     
     end minutes;
