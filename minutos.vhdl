@@ -16,6 +16,8 @@ architecture minutes of minutos is
     component prsc_1_2_hz is
         port(
         clock       : in bit;
+        modo        : in bit;
+        ajuste      : in bit;
         out1hz      : out bit;
         out2hz      : out bit
     );
@@ -24,8 +26,7 @@ architecture minutes of minutos is
     signal count60        :integer range 0 to 59;
 
     begin
-
-        prescaler_1_2 : prsc_1_2_hz port map(clock => clock, out1hz => segundos, out2hz => meio_segundos);
+        prescaler_1_2 : prsc_1_2_hz port map(clock => clock, modo => modo, ajuste => ajuste, out1hz => segundos, out2hz => meio_segundos);
 
         process(segundos, meio_segundos)
         begin

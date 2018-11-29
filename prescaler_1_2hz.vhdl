@@ -3,6 +3,8 @@ library ieee;
 entity prsc_1_2_hz is
     port(
         clock       : in bit;
+        modo        : in bit;
+        ajuste      : in bit;
         out1hz      : out bit;
         out2hz      : out bit
     );
@@ -22,7 +24,7 @@ architecture arch of prsc_1_2_hz is
     signal count2hz          : integer range 0 to f/2 := 0;
 
     begin
-        process(clock)
+        process(clock, ajuste, modo)
         begin
             if clock'event and clock = '1' then
                 if count1hz = f then
@@ -36,6 +38,10 @@ architecture arch of prsc_1_2_hz is
                 else
                     count2hz <= count2hz + 1;
                 end if;
+            end if;
+            if ajuste = '1' and modo = '1' then
+                count1hz <= 0;
+                count2hz <= 0;
             end if;
         end process;
         
