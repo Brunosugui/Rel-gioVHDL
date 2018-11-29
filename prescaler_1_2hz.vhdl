@@ -1,12 +1,12 @@
 library ieee;
 
-entity prsc_1hz is
+entity prsc_1_2_hz is
     port(
         clock       : in bit;
         out1hz      : out bit;
-        out2hz      : out bit;
-    )
-    end prsc_1hz;
+        out2hz      : out bit
+    );
+    end prsc_1_2_hz;
 
 package frequency is
     constant f      : integer;
@@ -17,24 +17,25 @@ package body frequency is
 end frequency;
 
 
-architecture prsc is
-    variable count1hz          : integer range 0 to f := 0;
-    variable count2hz          : integer range 0 to f/2 := 0;
+architecture arch of prsc_1_2_hz is
+    signal count1hz          : integer range 0 to f := 0;
+    signal count2hz          : integer range 0 to f/2 := 0;
 
     begin
         process(clock)
         begin
             if clock'event and clock = '1' then
                 if count1hz = f then
-                    count1hz := 0;
+                    count1hz <= 0;
                 else
-                    count1hz := count1hz + 1
+                    count1hz <= count1hz + 1
                 end if;
 
                 if count2hz = f/2 then
-                    count2hz := 0;
+                    count2hz <= 0;
                 else
-                    count2hz := count2hz + 1;
+                    count2hz <= count2hz + 1;
+                end if;
             end if;
         end process;
         
@@ -58,4 +59,4 @@ architecture prsc is
             end if;
         end process;
 
-    end prsc;
+    end arch;
