@@ -10,30 +10,22 @@ entity prsc_1_2_hz is
     );
     end prsc_1_2_hz;
 
-package frequency is
-    constant f      : integer;
-end frequency;
-
-package body frequency is
-    constant f      : integer := 32768;
-end frequency;
-
-
 architecture arch of prsc_1_2_hz is
-    signal count1hz          : integer range 0 to f := 0;
-    signal count2hz          : integer range 0 to f/2 := 0;
+    constant freq  :   Integer     :=  32768;
+    signal count1hz          : integer range 0 to freq := 0;
+    signal count2hz          : integer range 0 to freq/2 := 0;
 
     begin
         process(clock, ajuste, modo)
         begin
             if clock'event and clock = '1' then
-                if count1hz = f then
+                if count1hz = freq then
                     count1hz <= 0;
                 else
-                    count1hz <= count1hz + 1
+                    count1hz <= count1hz + 1;
                 end if;
 
-                if count2hz = f/2 then
+                if count2hz = freq/2 then
                     count2hz <= 0;
                 else
                     count2hz <= count2hz + 1;
@@ -48,7 +40,7 @@ architecture arch of prsc_1_2_hz is
 
         process(count1hz)
         begin
-            if count1hz < f/2 then
+            if count1hz < freq/2 then
                 out1hz <= '0';
             else
                 out1hz <= '1';
@@ -58,7 +50,7 @@ architecture arch of prsc_1_2_hz is
 
         process(count2hz)
         begin
-            if count2hz < f/4 then
+            if count2hz < freq/4 then
                 out2hz <= '0';
             else
                 out2hz <= '1';
