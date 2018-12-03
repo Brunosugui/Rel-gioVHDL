@@ -1,4 +1,7 @@
 library ieee;
+library workREL;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 entity prsc_1_2_hz is
     port(
@@ -11,7 +14,8 @@ entity prsc_1_2_hz is
     end prsc_1_2_hz;
 
 architecture arch of prsc_1_2_hz is
-    constant freq  :   Integer     :=  32768;
+    --constant freq  :   Integer     :=  32768;
+    constant freq  :   Integer     :=  4;
     signal count1hz          : integer range 0 to freq := 0;
     signal count2hz          : integer range 0 to freq/2 := 0;
 
@@ -19,42 +23,30 @@ architecture arch of prsc_1_2_hz is
         process(clock, ajuste, modo)
         begin
             if clock'event and clock = '1' then
-                if count1hz = freq then
+                if count1hz = (freq - 1) then
                     count1hz <= 0;
+                    out1hz <= '1';
                 else
                     count1hz <= count1hz + 1;
+                    out1hz <= '0';
                 end if;
 
-                if count2hz = freq/2 then
+                if count2hz = (freq/2 - 1) then
                     count2hz <= 0;
+                    out2hz <= '1';
                 else
                     count2hz <= count2hz + 1;
+                    out2hz <= '0';
                 end if;
             end if;
             if ajuste = '1' and modo = '1' then
                 count1hz <= 0;
                 count2hz <= 0;
+                out1hz <= '0';
+                out2hz <= '0';
             end if;
         end process;
         
 
-        process(count1hz)
-        begin
-            if count1hz < freq/2 then
-                out1hz <= '0';
-            else
-                out1hz <= '1';
-            end if;
-        end process;
-
-
-        process(count2hz)
-        begin
-            if count2hz < freq/4 then
-                out2hz <= '0';
-            else
-                out2hz <= '1';
-            end if;
-        end process;
 
     end arch;
