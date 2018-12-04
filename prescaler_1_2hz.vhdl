@@ -11,6 +11,7 @@ entity prsc_1_2_hz is
     end prsc_1_2_hz;
 
 architecture arch of prsc_1_2_hz is
+    --commit teste
     constant freq  :   Integer     :=  32768;
     signal count1hz          : integer range 0 to freq := 0;
     signal count2hz          : integer range 0 to freq/2 := 0;
