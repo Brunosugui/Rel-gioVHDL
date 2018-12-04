@@ -1,11 +1,11 @@
 library ieee;
 library workREL;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 entity conta_minutos is
     port(
         clock           : in bit;
-        --segundos        : in bit;
-        --meio_segundos   : in bit;
         modo            : in bit;
         ajuste          : in bit;
         minuto          : out bit
@@ -13,6 +13,8 @@ entity conta_minutos is
 end conta_minutos;
 
 architecture minutes of conta_minutos is
+
+    constant maxSegundos  :   Integer     :=  60;
 
     component prsc_1_2_hz is
         port(
@@ -24,7 +26,7 @@ architecture minutes of conta_minutos is
     );
     end component;
 
-    signal count60                  :integer range 0 to 59 := 0;
+    signal count60                  :integer range 0 to (maxSegundos - 1) := 0;
     signal seconds, half_seconds    : bit;
 
     type state_type is (s0, s1);

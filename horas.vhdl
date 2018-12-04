@@ -1,6 +1,7 @@
 library ieee;
 library workREL;
-use workREL.all;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 entity conta_horas is
     port(
@@ -12,6 +13,8 @@ entity conta_horas is
     end conta_horas;
 
     architecture hours of conta_horas is
+
+        constant maxMinutos  :   Integer     :=  60;
 
         component prsc_1_2_hz is
             port(
@@ -33,7 +36,7 @@ entity conta_horas is
         end component;
 
         signal meio_segundos, segundos, minutos        : bit := '0';
-        signal count60                                 : integer range 0 to 59;
+        signal count60                                 : integer range 0 to (maxMinutos - 1) := 0;
 
         --s0 = estado de contagem normal
         --s1 = contador de horas = contador de segundos
@@ -50,16 +53,12 @@ entity conta_horas is
         begin
         if fsm_state = s0 then
             if minutos'event and minutos = '1' then
-                if count60 = 59 then
+                if count60 = (maxMinutos - 1) then
                     count60 <= 0;
+                    hora <= '1';
                 else
                     count60 <= count60 + 1;
-                end if;
-
-                if count60 < 29 then
                     hora <= '0';
-                else
-                    hora <= '1';
                 end if;
             end if;
         elsif fsm_state = s1 then
