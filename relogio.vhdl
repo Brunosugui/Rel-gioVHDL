@@ -69,7 +69,7 @@ architecture clock of relogio is
             end if;
 
             if minutos'event and minutos = '1' then
-                if minutos_aux <= 59 then
+                if minutos_aux = 59 then
                     minutos_aux <= 0;
                 else
                 minutos_aux <= minutos_aux + 1;

@@ -53,12 +53,18 @@ architecture minutes of conta_minutos is
                     end if;
                 end if;
             elsif fsm_state = s1 then
-                minuto <= half_seconds;
-                count60 <= 0;
+                if half_seconds'event then
+                    count60 <= 0;
+                    if half_seconds = '1' then
+                        minuto <= '1';
+                    else 
+                        minuto <= '0';
+                    end if;
+                end if;            
             end if;
             end process;
 
-        process(ajuste, modo, half_seconds)
+        process(ajuste, modo, fsm_state)
         begin
             case fsm_state is
                 when s0 =>

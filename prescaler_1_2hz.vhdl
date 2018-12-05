@@ -14,8 +14,6 @@ entity prsc_1_2_hz is
     end prsc_1_2_hz;
 
 architecture arch of prsc_1_2_hz is
-    --commit teste
-    --constant freq  :   Integer     :=  32768;
     --constant freq  :   Integer     :=  32768;
     constant freq  :   Integer     :=  4;
     signal count1hz          : integer range 0 to freq := 0;
@@ -41,12 +39,12 @@ architecture arch of prsc_1_2_hz is
                     out2hz <= '0';
                 end if;
             end if;
-            if ajuste = '1' and modo = '1' then
-                count1hz <= 0;
-                count2hz <= 0;
-                out1hz <= '0';
-                out2hz <= '0';
-            end if;
+            --if ajuste = '1' and modo = '1' then
+                --count1hz <= 0;
+                --count2hz <= 0;
+                --out1hz <= '0';
+                --out2hz <= '0';
+            --end if;
         end process;
         
 
