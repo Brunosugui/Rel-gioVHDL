@@ -27,19 +27,21 @@ architecture clock of relogio is
 
     component conta_minutos is
         port(
-            clock           : in bit;
-            modo            : in bit;
-            ajuste          : in bit;
-            minuto          : out bit
+        segundos        : in bit;
+        meio_segundos   : in bit;
+        modo            : in bit;
+        ajuste          : in bit;
+        minuto          : out bit
     );
     end component;
 
     component conta_horas is
         port(
-            clock           : in bit;
-            modo            : in bit;
-            ajuste          : in bit;
-            hora            : out bit
+        segundos        : in bit;
+        minutos         : in bit;
+        modo            : in bit;
+        ajuste          : in bit;
+        hora            : out bit
     );
     end component;
 
@@ -51,8 +53,8 @@ architecture clock of relogio is
 
     begin
         prescaler_1_2 : prsc_1_2_hz port map(clock => clock, modo => modo, ajuste => ajuste, out1hz => segundos, out2hz => meio_segundos);
-            c_minutos : conta_minutos port map(clock => clock, modo => modo, ajuste => ajuste, minuto => minutos);
-            c_horas   : conta_horas port map(clock => clock, modo => modo, ajuste => ajuste, hora => horas);
+            c_minutos : conta_minutos port map(segundos => segundos, meio_segundos => meio_segundos, modo => modo, ajuste => ajuste, minuto => minutos);
+            c_horas   : conta_horas port map(segundos => segundos, minutos => minutos, modo => modo, ajuste => ajuste, hora => horas);
 
             hora <= std_logic_vector(to_unsigned(horas_aux, hora'length));
             minuto <= std_logic_vector(to_unsigned(minutos_aux, minuto'length));

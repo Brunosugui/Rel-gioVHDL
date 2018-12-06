@@ -5,7 +5,8 @@ use ieee.numeric_std.all;
 
 entity conta_horas is
     port(
-        clock           : in bit;
+        segundos        : in bit;
+        minutos         : in bit;
         modo            : in bit;
         ajuste          : in bit;
         hora            : out bit
@@ -15,27 +16,7 @@ entity conta_horas is
     architecture hours of conta_horas is
 
         constant maxMinutos  :   Integer     :=  60;
-
-        component prsc_1_2_hz is
-            port(
-            clock       : in bit;
-            modo        : in bit;
-            ajuste      : in bit;
-            out1hz      : out bit;
-            out2hz      : out bit
-        );
-        end component;
-
-        component conta_minutos is
-            port(
-                clock           : in bit;
-                modo            : in bit;
-                ajuste          : in bit;
-                minuto          : out bit
-        );
-        end component;
-
-        signal meio_segundos, segundos, minutos        : bit := '0';
+        
         signal count60                                 : integer range 0 to (maxMinutos - 1) := 0;
 
         --s0 = estado de contagem normal
@@ -44,11 +25,7 @@ entity conta_horas is
         
         signal fsm_state : state_type;
 
-        begin
-            prescaler_1_2 : prsc_1_2_hz port map(clock => clock, modo => modo, ajuste => ajuste, out1hz => segundos, out2hz => meio_segundos);
-            c_minutos : conta_minutos port map(clock => clock, modo => modo, ajuste => ajuste, minuto => minutos);
-            
-
+        begin            
         process(segundos, minutos)
         begin
         if fsm_state = s0 then

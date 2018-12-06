@@ -5,7 +5,8 @@ use ieee.numeric_std.all;
 
 entity conta_minutos is
     port(
-        clock           : in bit;
+        segundos        : in bit;
+        meio_segundos   : in bit;
         modo            : in bit;
         ajuste          : in bit;
         minuto          : out bit
@@ -16,30 +17,18 @@ architecture minutes of conta_minutos is
 
     constant maxSegundos  :   Integer     :=  60;
 
-    component prsc_1_2_hz is
-        port(
-        clock       : in bit;
-        modo        : in bit;
-        ajuste      : in bit;
-        out1hz      : out bit;
-        out2hz      : out bit
-    );
-    end component;
-
     signal count60                  :integer range 0 to (maxSegundos - 1) := 0;
-    signal seconds, half_seconds    : bit;
 
     type state_type is (s0, s1);
         
     signal fsm_state : state_type;
 
     begin
-        prescaler_1_2 : prsc_1_2_hz port map(clock => clock, modo => modo, ajuste => ajuste, out1hz => seconds, out2hz => half_seconds);
 
-        process(fsm_state, seconds, half_seconds)
+        process(fsm_state, segundos, meio_segundos)
             begin
             if fsm_state = s0 then
-                if seconds'event and seconds = '1' then
+                if segundos'event and segundos = '1' then
                     if count60 = 59 then
                         count60 <= 0;
                     else
@@ -53,9 +42,9 @@ architecture minutes of conta_minutos is
                     end if;
                 end if;
             elsif fsm_state = s1 then
-                if half_seconds'event then
+                if meio_segundos'event then
                     count60 <= 0;
-                    if half_seconds = '1' then
+                    if meio_segundos = '1' then
                         minuto <= '1';
                     else 
                         minuto <= '0';
