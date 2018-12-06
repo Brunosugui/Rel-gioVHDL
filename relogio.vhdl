@@ -18,8 +18,6 @@ architecture clock of relogio is
     component prsc_1_2_hz is
         port(
         clock       : in bit;
-        modo        : in bit;
-        ajuste      : in bit;
         out1hz      : out bit;
         out2hz      : out bit
     );
@@ -52,7 +50,7 @@ architecture clock of relogio is
 
 
     begin
-        prescaler_1_2 : prsc_1_2_hz port map(clock => clock, modo => modo, ajuste => ajuste, out1hz => segundos, out2hz => meio_segundos);
+        prescaler_1_2 : prsc_1_2_hz port map(clock => clock, out1hz => segundos, out2hz => meio_segundos);
             c_minutos : conta_minutos port map(segundos => segundos, meio_segundos => meio_segundos, modo => modo, ajuste => ajuste, minuto => minutos);
             c_horas   : conta_horas port map(segundos => segundos, minutos => minutos, modo => modo, ajuste => ajuste, hora => horas);
 

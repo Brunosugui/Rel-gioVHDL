@@ -6,8 +6,6 @@ use ieee.numeric_std.all;
 entity prsc_1_2_hz is
     port(
         clock       : in bit;
-        modo        : in bit;
-        ajuste      : in bit;
         out1hz      : out bit;
         out2hz      : out bit
     );
@@ -20,7 +18,7 @@ architecture arch of prsc_1_2_hz is
     signal count2hz          : integer range 0 to freq/2 := 0;
 
     begin
-        process(clock, ajuste, modo)
+        process(clock)
         begin
             if clock'event and clock = '1' then
                 if count1hz = (freq - 1) then
